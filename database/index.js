@@ -50,18 +50,22 @@ const userReviewSchema = mongoose.Schema({
 
 const UserReview = mongoose.model('UserReview', userReviewSchema);
 
-const saveUserReview = (username, title, text, rating, callback) => {
-  const newUserReview = new UserReview({
-    username,
-    title,
-    text,
-    rating
-  });
-  newUserReview.save((err, data) => {
+const saveUserReview = (reviewObject, response) => {
+  const newUserReview = new UserReview({reviewObject});
+  // const newUserReview = new UserReview({
+  //   username,
+  //   title,
+  //   text,
+  //   rating
+  // });
+  newUserReview.save(err => {
     if (err) {
-      callback(err);
+      console.log(`error saving review into database saveuserreview function ${err}`)
     } else {
-      callback(err, data);
+      console.log('successfully saves review to database')
+      response.status(201, 'OK');
+      // response.redirect('/');
+      response.end();
     }
   })
 }
