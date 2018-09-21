@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Glyphicon } from 'react-bootstrap';
 import axios from 'axios';
+import UserDisplay from './userReviewDisplay.jsx';
 
 export default class UserReviewSubmit extends Component {
   constructor(props) {
@@ -72,12 +73,12 @@ export default class UserReviewSubmit extends Component {
     .then(response => {
       console.log(response);
       this.setState({userReview: response.data}, () => {
-        console.log(this.state.userReview)
       })
     })
     .catch(err => {
       console.error(err);
     })
+    console.log(this.state.userReview)
   }
 
   render () {
@@ -129,16 +130,19 @@ export default class UserReviewSubmit extends Component {
             <div className="row">
               <div className="col-md-4">
               {this.state.userReview.map(reviewPart => {
-                return (
-                  <div >
-                    <h3>{reviewPart.title}</h3>
-                    <dl>
-                      <dt>
-                        Rating: {reviewPart.rating}
-                      </dt>
-                    </dl>
-                    <p>{reviewPart.reviewText}</p>
-                  </div>
+                return (<UserDisplay  key={reviewPart.id} 
+                                      title={reviewPart.title}
+                                      rating={reviewPart.rating}
+                                      reviewText={reviewPart.reviewText}/>
+                  // <div >
+                  //   <h3>{reviewPart.title}</h3>
+                  //   <dl>
+                  //     <dt>
+                  //       Rating: {reviewPart.rating}
+                  //     </dt>
+                  //   </dl>
+                  //   <p>{reviewPart.reviewText}</p>
+                  // </div>
                 )
               })}
               </div>

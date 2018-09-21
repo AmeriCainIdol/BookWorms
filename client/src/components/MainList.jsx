@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Card, CardTitle, CardText } from 'material-ui/Card';
 import { BrowserRouter, Link } from 'react-router-dom';
-import UserReviewSubmit from './userReviewSubmit.jsx';
+import UserDisplay from './userReviewDisplay.jsx';
 import ModalReview from './Modal.jsx';
 
 
@@ -113,7 +113,7 @@ export default class MainList extends Component {
                   </a>
                   {this.props.item.longDescript}
                   <div>
-                    
+                    <UserDisplay />
                     {/* <UserReviewSubmit /> */}
                   </div>
                 </div>

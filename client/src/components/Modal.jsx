@@ -20,7 +20,7 @@ const backdropStyle = {
 export default class ModalReview extends Component {
   constructor(props) {
     super(props);
-    console.log(props, "modal")
+    // console.log(props, "modal")
     // this.onClose = this.onClose.bind(this);
   }
   

@@ -312,8 +312,9 @@ app.get('/userreviews', (req, res) => {
     if (err) {
       console.error(err);
     } else {
-      // console.log(data, 'data')
+      console.log(data, 'data')
       const displayedReviewData = data.map(review => {
+        console.log(review);
         return {
           id: review.id,
           title: review.title,
@@ -322,7 +323,7 @@ app.get('/userreviews', (req, res) => {
           rating: review.rating
         }
       })
-      console.log(displayedReviewData, 'display data');
+      // console.log(displayedReviewData, 'display data');
       res.send(displayedReviewData);
     }
   })
