@@ -19,6 +19,7 @@ const goodReadsData = (title) => {
 
 const googleBooks = (title) => {
   const format = title.split(' ').join('_');
+  console.log(format);
   return axios.get(`https://www.googleapis.com/books/v1/volumes?q=${format}&key=${google}`);
 };
 const openLibrary = isbn => axios.get(`https://openlibrary.org/api/books.json?bibkeys=ISBN:${isbn}`);

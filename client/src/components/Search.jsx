@@ -16,7 +16,7 @@ class Search extends React.Component {
   handleOnclick(e) {
     e.preventDefault();
     this.props.handleSearchInput(this.state.value);
-    this.props.handleEbaySearchInput(this.state.value);
+    // this.props.handleEbaySearchInput(this.state.value);
     this.setState({ value: '' });
   }
 
@@ -24,7 +24,7 @@ class Search extends React.Component {
     if (e.key === 'Enter') {
       e.preventDefault();
       this.props.handleSearchInput(this.state.value);
-      this.props.handleEbaySearchInput(this.state.value);
+      // this.props.handleEbaySearchInput(this.state.value);
       this.setState({ value: '' });
     }
   }
