@@ -45,7 +45,7 @@ export default class MainList extends Component {
     return (
       <div>
         <div className="container">
-          <ModalReview onClose={this.showModal} showModal={this.state.showModal} />
+          <ModalReview title={this.props.item.title} onClose={this.showModal} showModal={this.state.showModal} />
           <Card>
             <div className="book-card">
               <div className="media">
@@ -114,7 +114,7 @@ export default class MainList extends Component {
                   {this.props.item.longDescript}
                   <div>
                     
-                    <UserReviewSubmit title={this.props.item.title}/>
+                    {/* <UserReviewSubmit /> */}
                   </div>
                 </div>
                 <div className="media-right">
