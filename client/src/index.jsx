@@ -202,6 +202,7 @@ class App extends Component {
                     <Nav
                       {...props}
                       items={this.state.items}
+                      ebaydata={this.state.ebaydata}
                       reviews={this.state.reviews}
                       reviewToggle={this.reviewToggle.bind(this)}
                       reviewToggled={this.state.reviewToggled}
@@ -211,8 +212,8 @@ class App extends Component {
                       username={this.state.username}
                       openLibLink={this.state.openLibLink}
                       handleHomeLink={this.getTopRated.bind(this)}
-                      // add link for ebaySearch
-                      handleEbaySearchInput={this.ebaySearch.bind(this)}
+                    // add link for ebaySearch
+                    // handleEbaySearchInput={this.ebaySearch.bind(this)}
 
                     />
                   )}

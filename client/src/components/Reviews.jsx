@@ -103,7 +103,7 @@ class Reviews extends React.Component {
               {this.props.reviews.map(review => <UserReviewsList review={review} key={review.user} />)}
 
             </div>
-            <div className="container-fluid" style={{paddingTop: '20px' }}>
+            <div className="container-fluid" style={{ paddingTop: '20px' }}>
               <h5 className="media-heading">Write Review</h5>
               <UserReviewSubmit onClick={this.redirectToUserSubmission}>Write Review</UserReviewSubmit>
             </div>

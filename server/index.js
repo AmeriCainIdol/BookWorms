@@ -203,6 +203,23 @@ app.get('/googleData', (req, response) => {
       const coverImage = info.imageLinks.thumbnail; // url to large format thumbnail
       const ISBN10 = info.industryIdentifiers[0].identifier;
       let ISBN13;
+      let ebaydata = null;
+
+      ebayHelpers.ebayPost(req.query.title).then((data) => {
+        const ebayObject = `"${ebayHelpers.ebayFormatter(data.data).slice(29)}`;
+        const ebayObjectAgain = `"${ebayObject.split('').reverse().slice(2).join('')}`;
+        const strungObject = ebayObjectAgain.split('').reverse().join('');
+        const filterableObject = JSON.parse(strungObject);
+        const { findItemsByKeywordsResponse } = filterableObject;
+
+        ebaydata = strungObject;
+
+        // ebaydata = {
+        //   findItemsByKeywordsResponse,
+        // };
+      });
+
+
 
       if (info.industryIdentifiers[1]) {
         ISBN13 = info.industryIdentifiers[1].identifier;
@@ -245,7 +262,9 @@ app.get('/googleData', (req, response) => {
                 userRating: 2.75,
                 aggregateRating,
                 ISBN13,
+                ebaydata,
               });
+              // console.log(ebaydata);
             });
         });
     })
@@ -281,39 +300,3 @@ app.get('/goodreads', (req, res) => {
     })
     .catch(err => console.log('error line 273'));
 });
-
-
-// TEAM AMERICAIN IDOL WORK STARTS HERE //
-
-//post request to server for userReviews
-app.post('/userReviewSubmit', (req, res) => {
-  console.log(req.body, 'post request from server/index.js')
-  // const newReview = {
-  //   username: req.body.username,
-  //   title: req.body.title,
-  //   reviewText: req.body.reviewText,
-  //   rating: req.body.rating
-  // }
-  // db.saveUserReview(newReview, res);
-  res.sendStatus(201);
-  // res.send(req.body);
-  res.end();
-})
-
-
-app.get('/ebaybay',
-  (req, res) => {
-    const keyWordToEncode = req.body;
-    console.log(keyWordToEncode);
-    const keyWordEncoded = ebayHelpers.createKeyWordForSearch(keyWordToEncode);
-    console.log(keyWordEncoded);
-
-    ebayHelpers.ebayPost(keyWordEncoded,
-      (err, res) => {
-        if (err) {
-          console.log('ebayhelpers erro');
-        } else {
-          console.log('ebayhelpers success', res);
-        }
-      });
-  });
