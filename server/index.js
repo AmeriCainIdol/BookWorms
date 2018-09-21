@@ -310,6 +310,7 @@ app.get('/userReviewSubmit', (req, res) => {
           rating: review.rating
         }
       })
+      console.log(displayedReviewData);
       res.send(displayedReviewData);
     }
   })

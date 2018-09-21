@@ -88,8 +88,9 @@ const saveReview = (title, username, reviewText, reviewRating, cb) => {
 };
 
 //add function to query database for userReviews to display on DOM
+const query = Review.find();
 const findUserReviews = callback => {
-  query.limit(3).select('title reviewText, reviewRating').exec(callback);
+  query.limit(3).select('title reviewText reviewRating').exec(callback);
 }
 
 const allReviews = (cb) => {
