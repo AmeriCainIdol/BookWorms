@@ -288,48 +288,57 @@ app.get('/goodreads', (req, res) => {
 
 //post request to server for userReviews
 app.post('/userReviewSubmit', (req, res) => {
-  console.log(req.body, 'post request from server/index.js')
+  // console.log(req.body.rating, 'post request from server/index.js')
+  const title = req.body.title;
+  const bookTitle = req.body.bookTitle;
+  const reviewText = req.body.reviewText;
+  const rating = req.body.rating;
+
   const newReview = {
-    username: req.body.username,
-    title: req.body.title,
-    reviewText: req.body.reviewText,
-    rating: req.body.rating
+    title,
+    bookTitle,
+    reviewText,
+    rating
   }
   db.saveUserReview(newReview, res);
+  res.sendStatus(201);
+  res.end();
 })
 
-app.get('/userReviewSubmit', (req, res) => {
+app.get('/userreviews', (req, res) => {
   db.findUserReviews((err, data) => {
     if (err) {
       console.error(err);
     } else {
+      // console.log(data, 'data')
       const displayedReviewData = data.map(review => {
         return {
           title: review.title,
+          bookTitle: review.bookTitle,
           reviewText: review.reviewText,
           rating: review.rating
         }
       })
-      console.log(displayedReviewData);
+      console.log(displayedReviewData, 'display data');
       res.send(displayedReviewData);
     }
   })
 })
 
 
-app.get('/ebaybay',
-  (req, res) => {
-    const keyWordToEncode = req.body;
-    console.log(keyWordToEncode);
-    const keyWordEncoded = ebayHelpers.createKeyWordForSearch(keyWordToEncode);
-    console.log(keyWordEncoded);
+// app.get('/ebaybay',
+//   (req, res) => {
+//     const keyWordToEncode = req.body;
+//     console.log(keyWordToEncode);
+//     const keyWordEncoded = ebayHelpers.createKeyWordForSearch(keyWordToEncode);
+//     console.log(keyWordEncoded);
 
-    ebayHelpers.ebayPost(keyWordEncoded,
-      (err, res) => {
-        if (err) {
-          console.log('ebayhelpers erro');
-        } else {
-          console.log('ebayhelpers success', res);
-        }
-      });
-  });
+//     ebayHelpers.ebayPost(keyWordEncoded,
+//       (err, res) => {
+//         if (err) {
+//           console.log('ebayhelpers erro');
+//         } else {
+//           console.log('ebayhelpers success', res);
+//         }
+//       });
+//   });

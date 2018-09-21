@@ -35,39 +35,39 @@ const User = mongoose.model('User', userSchema);
 
 const reviewSchema = mongoose.Schema({
   title: String,
-  username: String,
+  bookTitle: String,
   reviewText: String,
   reviewRating: Number,
 });
 
 //create UserReviewSchema
 const userReviewSchema = mongoose.Schema({
-  username: String,
   title: String,
-  text: String,
+  bookTitle: String,
+  reviewText: String,
   rating: Number
 })
 
 const UserReview = mongoose.model('UserReview', userReviewSchema);
 
 const saveUserReview = (reviewObject, response) => {
-  const newUserReview = new UserReview({reviewObject});
-  // const newUserReview = new UserReview({
-  //   username,
-  //   title,
-  //   text,
-  //   rating
-  // });
+  const newUserReview = new UserReview(reviewObject);
+  
   newUserReview.save(err => {
     if (err) {
-      console.log(`error saving review into database saveuserreview function ${err}`)
+      console.log(`error saving review into database saveUserReview function ${err}`)
     } else {
       console.log('successfully saves review to database')
-      response.status(201, 'OK');
-      // response.redirect('/');
+      response.status(201);
       response.end();
     }
   })
+}
+//add function to query database for userReviews to display on DOM
+// const query = UserReview.find();
+
+const findUserReviews = callback => {
+  UserReview.find().limit(3).select('title bookTitle reviewText rating').exec(callback);
 }
 const Review = mongoose.model('Review', reviewSchema);
 
@@ -87,11 +87,6 @@ const saveReview = (title, username, reviewText, reviewRating, cb) => {
   });
 };
 
-//add function to query database for userReviews to display on DOM
-const query = Review.find();
-const findUserReviews = callback => {
-  query.limit(3).select('title reviewText reviewRating').exec(callback);
-}
 
 const allReviews = (cb) => {
   Review.find({}, (err, books) => {

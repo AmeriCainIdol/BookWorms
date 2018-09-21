@@ -10,7 +10,8 @@ export default class UserReviewSubmit extends Component {
       title: '',
       bookTitle: this.props.title,
       reviewText: '',
-      rating: 0
+      rating: 0,
+      userReview: []
     }
     this.updateReviewText = this.updateReviewText.bind(this);
     this.updateTitle = this.updateTitle.bind(this);
@@ -65,6 +66,16 @@ export default class UserReviewSubmit extends Component {
       console.log(this.state.rating)
     })
   }
+  
+  componentDidMount () {
+    axios.get('/userreviews')
+      .then(response => {
+        this.setState({userReview: response.data})
+      })
+      .catch(err => {
+        console.error(err);
+      })
+  }
 
   render () {
     return (
@@ -98,6 +109,9 @@ export default class UserReviewSubmit extends Component {
                         >Submit Review</button>
               </div>
             </form>
+          </div>
+          <div className="col-md-4">
+            <h1></h1>
           </div>
         </div>
       </div>
