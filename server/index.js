@@ -315,6 +315,7 @@ app.get('/userreviews', (req, res) => {
       // console.log(data, 'data')
       const displayedReviewData = data.map(review => {
         return {
+          id: review.id,
           title: review.title,
           bookTitle: review.bookTitle,
           reviewText: review.reviewText,

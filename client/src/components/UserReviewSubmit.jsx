@@ -85,35 +85,38 @@ export default class UserReviewSubmit extends Component {
       <div className="container-fluid">
         <div className="row">
           <div className="col-md-4">
-            <form role="form" onSubmit={this.handleReviewSubmit}>
-              <div className="form-group">
-                <div className="form-check form-check-inline">
-                  <input className="form-check-input" type="checkbox" id="1" onChange={this.updateRating}/>
-                  <label className="form-check-label" htmlFor="inlineCheckbox1">1</label>
-                  <input className="form-check-input" type="checkbox" id="2" onChange={this.updateRating}/>
-                  <label className="form-check-label" htmlFor="inlineCheckbox1">2</label>
-                  <input className="form-check-input" type="checkbox" id="3" onChange={this.updateRating}/>
-                  <label className="form-check-label" htmlFor="inlineCheckbox1">3</label>
-                  <input className="form-check-input" type="checkbox" id="4" onChange={this.updateRating}/>
-                  <label className="form-check-label" htmlFor="inlineCheckbox1">4</label>
-                  <input className="form-check-input" type="checkbox" id="5" onChange={this.updateRating}/>
-                  <label className="form-check-label" htmlFor="inlineCheckbox1">5</label>
-                </div>
-                <input  type="text" 
-                        className="form-control" 
-                        placeholder="Title"
-                        onChange={this.updateTitle}/>
-                <textarea type="text" 
+            {/* <div className="overlay">
+              <span className="closebtn" onclick="closeSearch();" title="Close Overlay">x</span> */}
+              <form role="form" onSubmit={this.handleReviewSubmit}>
+                <div className="form-group">
+                  <div className="form-check form-check-inline">
+                    <input className="form-check-input" type="checkbox" id="1" onChange={this.updateRating}/>
+                    <label className="form-check-label" htmlFor="inlineCheckbox1">1</label>
+                    <input className="form-check-input" type="checkbox" id="2" onChange={this.updateRating}/>
+                    <label className="form-check-label" htmlFor="inlineCheckbox1">2</label>
+                    <input className="form-check-input" type="checkbox" id="3" onChange={this.updateRating}/>
+                    <label className="form-check-label" htmlFor="inlineCheckbox1">3</label>
+                    <input className="form-check-input" type="checkbox" id="4" onChange={this.updateRating}/>
+                    <label className="form-check-label" htmlFor="inlineCheckbox1">4</label>
+                    <input className="form-check-input" type="checkbox" id="5" onChange={this.updateRating}/>
+                    <label className="form-check-label" htmlFor="inlineCheckbox1">5</label>
+                  </div>
+                  <input  type="text" 
                           className="form-control" 
-                          onChange={this.updateReviewText}
-                          placeholder="Write Review...."/>
-                <button type="submit" 
-                        className="btn btn-success"
-                        >Submit Review</button>
-              </div>
-            </form>
+                          placeholder="Title"
+                          onChange={this.updateTitle}/>
+                  <textarea type="text" 
+                            className="form-control" 
+                            onChange={this.updateReviewText}
+                            placeholder="Write Review...."/>
+                  <button type="submit" 
+                          className="btn btn-success"
+                          >Submit Review</button>
+                </div>
+              </form>
+            </div>
           </div>
-          <div className="col-md-4">
+          {/* <div className="col-md-4">
             {this.state.userReview.map(reviewPart => {
               return (<div><h1>{reviewPart.title}</h1>
                       <h2>{reviewPart.bookTitle}</h2>
@@ -121,9 +124,28 @@ export default class UserReviewSubmit extends Component {
                       <h4>{reviewPart.rating}</h4></div>
                   )
             })}
+          </div> */}
+          <div className="container-fluid">
+            <div className="row">
+              <div className="col-md-4">
+              {this.state.userReview.map(reviewPart => {
+                return (
+                  <div >
+                    <h3>{reviewPart.title}</h3>
+                    <dl>
+                      <dt>
+                        Rating: {reviewPart.rating}
+                      </dt>
+                    </dl>
+                    <p>{reviewPart.reviewText}</p>
+                  </div>
+                )
+              })}
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      // </div>
     )
   }
 }

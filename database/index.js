@@ -69,7 +69,7 @@ const saveUserReview = (reviewObject, response) => {
 // const query = UserReview.find();
 
 const findUserReviews = callback => {
-  UserReview.find().limit(3).sort({'created_at': 1}).select('title bookTitle reviewText rating').exec(callback);
+  UserReview.find().limit(3).sort({'created_at': 1}).select('id title bookTitle reviewText rating').exec(callback);
 }
 const Review = mongoose.model('Review', reviewSchema);
 
