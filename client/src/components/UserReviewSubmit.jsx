@@ -18,7 +18,7 @@ export default class UserReviewSubmit extends Component {
     this.updateRating = this.updateRating.bind(this);
     this.handleReviewSubmit = this.handleReviewSubmit.bind(this);
   }
-
+  
   handleReviewSubmit(e) {
     e.preventDefault();
     //create object to store information for review
@@ -28,18 +28,18 @@ export default class UserReviewSubmit extends Component {
       reviewText: this.state.reviewText,
       rating: this.state.rating
     }
-
+    
     console.log(params);
     
     axios.post('/userReviewSubmit', params)
-      .then(response => {
-        console.log('axios post request from UserReviewSubmit.jsx: ', response);
-      })
-      .catch(err => {
-        console.log('error message from UserReviewSubmit.jsx: ', err);
-      })
+    .then(response => {
+      console.log('axios post request from UserReviewSubmit.jsx: ', response);
+    })
+    .catch(err => {
+      console.log('error message from UserReviewSubmit.jsx: ', err);
+    })
   }
-
+  
   updateTitle(e) {
     e.preventDefault();
     this.setState({
@@ -48,7 +48,7 @@ export default class UserReviewSubmit extends Component {
       console.log(this.state.title)
     })
   }  
-
+  
   updateReviewText(e) {
     e.preventDefault();
     this.setState({
@@ -57,7 +57,7 @@ export default class UserReviewSubmit extends Component {
       console.log(this.state.reviewText)
     })
   }
-
+  
   updateRating(e) {
     e.preventDefault();
     this.setState({
@@ -69,12 +69,15 @@ export default class UserReviewSubmit extends Component {
   
   componentDidMount () {
     axios.get('/userreviews')
-      .then(response => {
-        this.setState({userReview: response.data})
+    .then(response => {
+      console.log(response);
+      this.setState({userReview: response.data}, () => {
+        console.log(this.state.userReview)
       })
-      .catch(err => {
-        console.error(err);
-      })
+    })
+    .catch(err => {
+      console.error(err);
+    })
   }
 
   render () {

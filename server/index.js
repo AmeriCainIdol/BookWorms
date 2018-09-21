@@ -293,12 +293,14 @@ app.post('/userReviewSubmit', (req, res) => {
   const bookTitle = req.body.bookTitle;
   const reviewText = req.body.reviewText;
   const rating = req.body.rating;
+  const created_at = Date.now();
 
   const newReview = {
     title,
     bookTitle,
     reviewText,
-    rating
+    rating,
+    created_at
   }
   db.saveUserReview(newReview, res);
   res.sendStatus(201);
