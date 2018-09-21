@@ -45,7 +45,7 @@ export default class UserReviewSubmit extends Component {
     this.setState({
       title: e.target.value
     }, () => {
-      console.log(this.state.title)
+      // console.log(this.state.title)
     })
   }  
   
@@ -54,7 +54,7 @@ export default class UserReviewSubmit extends Component {
     this.setState({
       reviewText: e.target.value
     }, () => {
-      console.log(this.state.reviewText)
+      // console.log(this.state.reviewText)
     })
   }
   
@@ -63,11 +63,11 @@ export default class UserReviewSubmit extends Component {
     this.setState({
       rating: e.target.id
     }, () => {
-      console.log(this.state.rating)
+      // console.log(this.state.rating)
     })
   }
   
-  componentDidMount () {
+  componentDidMount() {
     axios.get('/userreviews')
     .then(response => {
       console.log(response);
@@ -114,7 +114,13 @@ export default class UserReviewSubmit extends Component {
             </form>
           </div>
           <div className="col-md-4">
-            <h1></h1>
+            {this.state.userReview.map(reviewPart => {
+              return (<div><h1>{reviewPart.title}</h1>
+                      <h2>{reviewPart.bookTitle}</h2>
+                      <h3>{reviewPart.reviewText}</h3>
+                      <h4>{reviewPart.rating}</h4></div>
+                  )
+            })}
           </div>
         </div>
       </div>
