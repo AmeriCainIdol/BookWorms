@@ -296,9 +296,23 @@ app.post('/userReviewSubmit', (req, res) => {
     rating: req.body.rating
   }
   db.saveUserReview(newReview, res);
-  // res.sendStatus(201);
-  // res.send(req.body);
-  // res.end();
+})
+
+app.get('/userReviewSubmit', (req, res) => {
+  db.findUserReviews((err, data) => {
+    if (err) {
+      console.error(err);
+    } else {
+      const displayedReviewData = data.map(review => {
+        return {
+          title: review.title,
+          reviewText: review.reviewText,
+          rating: review.rating
+        }
+      })
+      res.send(displayedReviewData);
+    }
+  })
 })
 
 
