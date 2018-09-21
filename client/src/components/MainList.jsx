@@ -7,7 +7,6 @@ import ModalReview from './Modal.jsx';
 
 export default class MainList extends Component {
   constructor(props) {
-    // console.log(props, 'MainList.jsx')
     super(props);
 
 
@@ -39,17 +38,14 @@ export default class MainList extends Component {
     this.setState({
       showModal: !this.state.showModal
     })
-    console.log('clicked'
-    )
+    console.log('clicked')
   }
-  
 
   render() {
     return (
-
       <div>
         <div className="container">
-          <ModalReview showModal={this.state.showModal} />
+          <ModalReview onClose={this.showModal} showModal={this.state.showModal} />
           <Card>
             <div className="book-card">
               <div className="media">

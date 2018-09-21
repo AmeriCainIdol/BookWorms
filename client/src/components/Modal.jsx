@@ -1,9 +1,15 @@
 import React, { Component } from 'react';
+import UserReviewSubmit from './UserReviewSubmit.jsx';
 
 export default class ModalReview extends Component {
   constructor(props) {
     super(props);
-    console.log(props, "mdoal")
+    console.log(props, "modal")
+    // this.onClose = this.onClose.bind(this);
+  }
+  
+  onClose (e) {
+    this.props.onClose && this.props.onClose(e);
   }
   render() {
     if (!this.props.showModal) {
@@ -11,7 +17,8 @@ export default class ModalReview extends Component {
     }
     return (
       <div>
-        Hello World
+        <UserReviewSubmit />
+        <button onClick={e => {this.onClose(e)}}>x</button>
       </div>
     )
   }
