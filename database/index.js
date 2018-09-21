@@ -87,6 +87,11 @@ const saveReview = (title, username, reviewText, reviewRating, cb) => {
   });
 };
 
+//add function to query database for userReviews to display on DOM
+const findUserReviews = callback => {
+  query.limit(3).select('title reviewText, reviewRating').exec(callback);
+}
+
 const allReviews = (cb) => {
   Review.find({}, (err, books) => {
     if (err) {
@@ -250,6 +255,7 @@ module.exports = {
   allBooks,
   addRating,
   saveUserReview,
+  findUserReviews,
   // saveReview,
   allReviews,
 };
