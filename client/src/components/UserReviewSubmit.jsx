@@ -66,41 +66,17 @@ export default class UserReviewSubmit extends Component {
     }, () => {
       // console.log(this.state.rating)
     })
-  }
-  
-  componentDidMount() {
-    axios.get('/userreviews')
-    .then(response => {
-      console.log(response);
-      this.setState({userReview: response.data}, () => {
-      })
-    })
     .catch(err => {
       console.error(err);
     })
     console.log(this.state.userReview)
   }
-  
-  // componentWillMount() {
-  //   axios.get('/userreviews')
-  //   .then(response => {
-  //     console.log(response, 'line 74');
-  //     this.setState({userReview: response.data}, () => {
-  //     })
-  //   })
-  //   .catch(err => {
-  //     console.error(err);
-  //   })
-  //   console.log(this.state.userReview)
-  // }
 
   render () {
     return (
       <div className="container-fluid">
         <div className="row">
           <div className="col-md-4">
-            {/* <div className="overlay">
-              <span className="closebtn" onclick="closeSearch();" title="Close Overlay">x</span> */}
               <form role="form" onSubmit={this.handleReviewSubmit}>
                 <div className="form-group">
                   <div className="form-check form-check-inline">
@@ -132,31 +108,14 @@ export default class UserReviewSubmit extends Component {
               </form>
             </div>
           </div>
-          {/* <div className="col-md-4">
-            {this.state.userReview.map(reviewPart => {
-              return (<div><h1>{reviewPart.title}</h1>
-                      <h2>{reviewPart.bookTitle}</h2>
-                      <h3>{reviewPart.reviewText}</h3>
-                      <h4>{reviewPart.rating}</h4></div>
-                  )
-            })}
-          </div> */}
           <div className="container-fluid">
             <div className="row">
               <div className="col-md-4">
               <UserDisplay review={this.state.userReview}/>
-                {/* {this.state.userReview.map(reviewPart => {
-                  return (<UserDisplay  key={reviewPart.id} 
-                                        title={reviewPart.title}
-                                        rating={reviewPart.rating}
-                                        reviewText={reviewPart.reviewText}/>
-                  )
-                })} */}
               </div>
             </div>
           </div>
         </div>
-      // </div>
     )
   }
-}
+};
