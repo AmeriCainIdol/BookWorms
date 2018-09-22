@@ -65,45 +65,18 @@ export default class UserReviewSubmit extends Component {
       rating: e.target.id
     }, () => {
       // console.log(this.state.rating)
-<<<<<<< HEAD
-=======
-    })
-  }
-  
-  componentDidMount() {
-    axios.get('/userreviews')
-    .then(response => {
-      console.log(response);
-      this.setState({userReview: response.data}, () => {
-      })
->>>>>>> 7d8534a38c3f5298a2d35e1f11489cd2ec3c03d7
     })
     .catch(err => {
       console.error(err);
     })
     console.log(this.state.userReview)
   }
-  
-  // componentWillMount() {
-  //   axios.get('/userreviews')
-  //   .then(response => {
-  //     console.log(response, 'line 74');
-  //     this.setState({userReview: response.data}, () => {
-  //     })
-  //   })
-  //   .catch(err => {
-  //     console.error(err);
-  //   })
-  //   console.log(this.state.userReview)
-  // }
 
   render () {
     return (
       <div className="container-fluid">
         <div className="row">
           <div className="col-md-4">
-            {/* <div className="overlay">
-              <span className="closebtn" onclick="closeSearch();" title="Close Overlay">x</span> */}
               <form role="form" onSubmit={this.handleReviewSubmit}>
                 <div className="form-group">
                   <div className="form-check form-check-inline">
@@ -121,20 +94,13 @@ export default class UserReviewSubmit extends Component {
                   <input  type="text" 
                           className="form-control" 
                           placeholder="Title"
-<<<<<<< HEAD
                           style={{width: '400px'}}
-=======
->>>>>>> 7d8534a38c3f5298a2d35e1f11489cd2ec3c03d7
                           onChange={this.updateTitle}/>
                   <textarea type="text" 
                             className="form-control" 
                             onChange={this.updateReviewText}
-<<<<<<< HEAD
                             placeholder="Write Review...."
                             style={{width: '400px'}}/>
-=======
-                            placeholder="Write Review...."/>
->>>>>>> 7d8534a38c3f5298a2d35e1f11489cd2ec3c03d7
                   <button type="submit" 
                           className="btn btn-success"
                           >Submit Review</button>
@@ -142,50 +108,14 @@ export default class UserReviewSubmit extends Component {
               </form>
             </div>
           </div>
-          {/* <div className="col-md-4">
-            {this.state.userReview.map(reviewPart => {
-              return (<div><h1>{reviewPart.title}</h1>
-                      <h2>{reviewPart.bookTitle}</h2>
-                      <h3>{reviewPart.reviewText}</h3>
-                      <h4>{reviewPart.rating}</h4></div>
-                  )
-            })}
-          </div> */}
           <div className="container-fluid">
             <div className="row">
               <div className="col-md-4">
-<<<<<<< HEAD
               <UserDisplay review={this.state.userReview}/>
-                {/* {this.state.userReview.map(reviewPart => {
-                  return (<UserDisplay  key={reviewPart.id} 
-                                        title={reviewPart.title}
-                                        rating={reviewPart.rating}
-                                        reviewText={reviewPart.reviewText}/>
-                  )
-                })} */}
-=======
-              {this.state.userReview.map(reviewPart => {
-                return (<UserDisplay  key={reviewPart.id} 
-                                      title={reviewPart.title}
-                                      rating={reviewPart.rating}
-                                      reviewText={reviewPart.reviewText}/>
-                  // <div >
-                  //   <h3>{reviewPart.title}</h3>
-                  //   <dl>
-                  //     <dt>
-                  //       Rating: {reviewPart.rating}
-                  //     </dt>
-                  //   </dl>
-                  //   <p>{reviewPart.reviewText}</p>
-                  // </div>
-                )
-              })}
->>>>>>> 7d8534a38c3f5298a2d35e1f11489cd2ec3c03d7
               </div>
             </div>
           </div>
         </div>
-      // </div>
     )
   }
-}
+};
