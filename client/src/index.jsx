@@ -22,7 +22,7 @@ import Logout from './containers/Logout.jsx';
 import SignUpPage from './containers/SignUpPage.jsx';
 import Main from './components/Main.jsx';
 import Auth from './modules/Auth';
-import UserReviewSubmit from './components/UserReviewSubmit.jsx';
+import UserReviewSubmit from './components/userReviewSubmit.jsx';
 
 // remove tap delay, essential for MaterialUI to work properly
 injectTapEventPlugin();

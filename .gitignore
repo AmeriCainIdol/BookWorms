@@ -34,4 +34,4 @@ config.js
 node_modules/
 bower_components/
 package-lock.json
-bundle.js
+client/dist/bundle.js

@@ -22,6 +22,8 @@ const app = express();
 // tell the app to look for static files in these directories
 app.use(express.static(`${__dirname}/../client/dist`));
 // tell the app to parse HTTP body messages
+//added line to have bodyParser parse incoming json
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
 
@@ -202,6 +204,7 @@ app.get('/googleData', (req, response) => {
       const coverImage = info.imageLinks.thumbnail; // url to large format thumbnail
       const ISBN10 = info.industryIdentifiers[0].identifier;
       let ISBN13;
+
       if (info.industryIdentifiers[1]) {
         ISBN13 = info.industryIdentifiers[1].identifier;
       }
@@ -283,43 +286,63 @@ app.get('/goodreads', (req, res) => {
 
 // TEAM AMERICAIN IDOL WORK STARTS HERE //
 
-// app.post('/ebaybay',
-//   (request, response, body) => {
-//     console.log('APP POST');
-//     // console.log(request.body);
-//     const keyWordToEncode = 'scarface';
-//     const keyWordEncoded = ebayHelpers.createKeyWordForSearch(keyWordToEncode);
+//post request to server for userReviews
+app.post('/userReviewSubmit', (req, res) => {
+  // console.log(req.body.rating, 'post request from server/index.js')
+  const title = req.body.title;
+  const bookTitle = req.body.bookTitle;
+  const reviewText = req.body.reviewText;
+  const rating = req.body.rating;
+  const created_at = Date.now();
 
-//     console.log(keyWordToEncode, keyWordEncoded);
+  const newReview = {
+    title,
+    bookTitle,
+    reviewText,
+    rating,
+    created_at
+  }
+  db.saveUserReview(newReview, res);
+  res.sendStatus(201);
+  res.end();
+})
+
+app.get('/userreviews', (req, res) => {
+  db.findUserReviews((err, data) => {
+    if (err) {
+      console.error(err);
+    } else {
+      console.log(data, 'data')
+      const displayedReviewData = data.map(review => {
+        console.log(review);
+        return {
+          id: review.id,
+          title: review.title,
+          bookTitle: review.bookTitle,
+          reviewText: review.reviewText,
+          rating: review.rating
+        }
+      })
+      // console.log(displayedReviewData, 'display data');
+      res.send(displayedReviewData);
+    }
+  })
+})
+
+
+// app.get('/ebaybay',
+//   (req, res) => {
+//     const keyWordToEncode = req.body;
+//     console.log(keyWordToEncode);
+//     const keyWordEncoded = ebayHelpers.createKeyWordForSearch(keyWordToEncode);
+//     console.log(keyWordEncoded);
 
 //     ebayHelpers.ebayPost(keyWordEncoded,
-//       (error) => {
-//         if (error) {
-//           // console.log('error inside ebaypost index.js: ', error);
-//           // console.log(error);
-//           // console.log('error inside post');
+//       (err, res) => {
+//         if (err) {
+//           console.log('ebayhelpers erro');
 //         } else {
-//           // console.log(response);
-//           const parsedBody = JSON.parse(response.body);
-//           // console.log('parsedBody:', parsedBody);
+//           console.log('ebayhelpers success', res);
 //         }
 //       });
-//     response.send(201, 'OK');
-//     response.end();
 //   });
-app.get('/ebaybay',
-  (req, res) => {
-    const keyWordToEncode = req.body;
-    console.log(keyWordToEncode);
-    const keyWordEncoded = ebayHelpers.createKeyWordForSearch(keyWordToEncode);
-    console.log(keyWordEncoded);
-
-    ebayHelpers.ebayPost(keyWordEncoded,
-      (err, res) => {
-        if (err) {
-          console.log('ebayhelpers erro');
-        } else {
-          console.log('ebayhelpers success', res);
-        }
-      });
-  });
