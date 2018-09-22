@@ -1,19 +1,24 @@
 import React, { Component } from 'react';
 import { Card, CardTitle, CardText } from 'material-ui/Card';
 import { BrowserRouter, Link } from 'react-router-dom';
-import { Button, Popup } from 'semantic-ui-react';
+import UserDisplay from './userReviewDisplay.jsx';
+import ModalReview from './Modal.jsx';
 import UserReviewSubmit from './UserReviewSubmit.jsx';
+import axios from 'axios';
 
 
 export default class MainList extends Component {
   constructor(props) {
-    console.log(props, 'MainList.jsx')
     super(props);
 
 
     this.state = {
-      reviewInput: null
+      reviewInput: null,
+      showModal: false,
+      userReviews: [],
+      showUserReview: false
     };
+
     this.handleSearchClick = (e) => {
       e.preventDefault();
       // const title = this.props.item.title;
@@ -23,13 +28,47 @@ export default class MainList extends Component {
       e.preventDefault();
       this.props.reviewToggle(this.props.item);
     };
+
+    //function to link to userReviewSubmit form
+    this.linktoUserReview = (e) => {
+      e.preventDefault();
+      this.props.history('/UserReviewSubmit');
+    };
+    //bind this to showModal method
+    this.showModal = this.showModal.bind(this);
+    this.getUserReviews = this.getUserReviews.bind(this);
   }
+  //create method to display modal
+  showModal() {
+    this.setState({
+      showModal: !this.state.showModal
+    })
+    console.log('clicked')
+  }
+
+  getUserReviews() {
+    axios.get('userreviews')
+      .then(response => {
+        console.log(response, 'line 48 mainlist.jsx')
+        this.setState({ 
+          userReviews: response.data,
+          showUserReview: !this.state.showUserReview
+         }, () => {
+          console.log(this.state.userReviews)
+        })
+      })
+      .catch(err => {
+        console.log('Houston, we have a problem', err)
+      })
+  }
+
+  
 
   render() {
     return (
-
       <div>
         <div className="container">
+          <ModalReview title={this.props.item.title} onClose={this.showModal} showModal={this.state.showModal} />
           <Card>
             <div className="book-card">
               <div className="media">
@@ -75,6 +114,18 @@ export default class MainList extends Component {
                       User Rating {' '}<span className="badge">{this.props.item.userRating}</span>
                     </button>
                     <button type="button"
+                      className="btn-group btn btn-success btn-sm"
+                      role="group"
+                      aria-label="..."
+                      value="show modal"
+                      // onClick={this.linktoUserReview.bind(this)}
+                      onClick={this.showModal}>Write Review</button>
+                    <button type="button"
+                            className="btn-group btn btn-primary btn-sm"
+                            role="group"
+                            aria-label="..."
+                            onClick={this.getUserReviews}>User Reviews</button>
+                    <button type="button"
                             className="btn-group btn btn-danger btn-sm"
                             role="group"
                             aria-label="..."
@@ -90,7 +141,19 @@ export default class MainList extends Component {
                   </a>
                   {this.props.item.longDescript}
                   <div>
-                    <UserReviewSubmit />
+                    {this.state.userReviews.map(review => {
+                      console.log(review)
+                      return (
+                        <div >
+                        <h3>{review.title}</h3>
+                        <dl>
+                          <dt>
+                            Rating: {review.rating}
+                          </dt>
+                        </dl>
+                        <p>{review.reviewText}</p>
+                      </div>)
+                    })}
                   </div>
                 </div>
                 <div className="media-right">
