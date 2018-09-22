@@ -89,12 +89,17 @@ export default class UserReviewSubmit extends Component {
                         onChange={this.updateTitle}/>
                 <textarea type="text" 
                           className="form-control" 
-                          onChange={this.updateReviewText}
-                          placeholder="Write Review...."
-                          style={{width: '400px'}}/>
-                <button type="submit" 
-                        className="btn btn-success"
-                        >Submit Review</button>
+                          placeholder="Title"
+                          style={{width: '400px'}}
+                          onChange={this.updateTitle}/>
+                  <textarea type="text" 
+                            className="form-control" 
+                            onChange={this.updateReviewText}
+                            placeholder="Write Review...."
+                            style={{width: '400px'}}/>
+                  <button type="submit" 
+                          className="btn btn-success"
+                          >Submit Review</button>
                 </div>
               </div>
             </form>
