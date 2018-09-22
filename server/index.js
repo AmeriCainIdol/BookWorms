@@ -203,6 +203,25 @@ app.get('/googleData', (req, response) => {
       const coverImage = info.imageLinks.thumbnail; // url to large format thumbnail
       const ISBN10 = info.industryIdentifiers[0].identifier;
       let ISBN13;
+      let ebaydata = null;
+
+
+      ebayHelpers.ebayPost(req.query.title).then(({ data }) => {
+        const fullObject = ebayHelpers.createFullItemInformation(
+          {},
+          ebayHelpers.getItemInformation(data),
+          ebayHelpers.getItemUrl(data),
+        );
+
+        ebaydata = Object.values(fullObject);
+        console.log(ebaydata);
+        console.log(Object.keys(fullObject));
+      }).catch((error) => {
+        if (error) {
+          console.log(error);
+        }
+      });
+
 
       if (info.industryIdentifiers[1]) {
         ISBN13 = info.industryIdentifiers[1].identifier;
@@ -245,7 +264,9 @@ app.get('/googleData', (req, response) => {
                 userRating: 2.75,
                 aggregateRating,
                 ISBN13,
+                ebaydata,
               });
+              // console.log(ebaydata);
             });
         });
     })
@@ -281,6 +302,8 @@ app.get('/goodreads', (req, res) => {
     })
     .catch(err => console.log('error line 273'));
 });
+<<<<<<< HEAD
+=======
 
 
 // TEAM AMERICAIN IDOL WORK STARTS HERE //
@@ -345,3 +368,4 @@ app.get('/userreviews', (req, res) => {
 //         }
 //       });
 //   });
+>>>>>>> cfc08e6104e95f375f3bfd6dd1020befaeb1c40f

@@ -9,7 +9,13 @@ import axios from 'axios';
 
 export default class MainList extends Component {
   constructor(props) {
+<<<<<<< HEAD
+    // console.log(props, 'MainList.jsx')
+    // console.log('test');
+=======
+>>>>>>> cfc08e6104e95f375f3bfd6dd1020befaeb1c40f
     super(props);
+    // console.log(props, 'mainlist.jsx');
 
 
     this.state = {
@@ -33,6 +39,11 @@ export default class MainList extends Component {
     this.linktoUserReview = (e) => {
       e.preventDefault();
       this.props.history('/UserReviewSubmit');
+<<<<<<< HEAD
+    }
+
+    //this.ebaytitle = this.props.item.ebaydata;
+=======
     };
     //bind this to showModal method
     this.showModal = this.showModal.bind(this);
@@ -44,6 +55,7 @@ export default class MainList extends Component {
       showModal: !this.state.showModal
     })
     console.log('clicked')
+>>>>>>> cfc08e6104e95f375f3bfd6dd1020befaeb1c40f
   }
 
   getUserReviews() {
@@ -78,45 +90,50 @@ export default class MainList extends Component {
                   </a>
                   <div className="btn-group-vertical" role="group" aria-label="...">
                     <button type="button"
-                            className="btn-group btn btn-primary btn-sm"
-                            role="group"
-                            aria-label="..."
-                            onClick={this.handleReviewClick.bind(this)}>
+                      className="btn-group btn btn-primary btn-sm"
+                      role="group"
+                      aria-label="..."
+                      onClick={this.handleReviewClick.bind(this)}>
                       Bookworms {' '}<span className="badge">{this.props.item.aggregateRating}</span>
                     </button>
                     <button type="button"
-                            className="btn-group btn btn-info btn-sm"
-                            role="group"
-                            aria-label="..."
-                            onClick={this.handleReviewClick.bind(this)}>
+                      className="btn-group btn btn-info btn-sm"
+                      role="group"
+                      aria-label="..."
+                      onClick={this.handleReviewClick.bind(this)}>
                       Google Books {' '}<span className="badge">{this.props.item.rating}</span>
                     </button>
                     <button type="button"
-                            className="btn-group btn btn-info btn-sm"
-                            role="group"
-                            aria-label="..."
-                            onClick={this.handleReviewClick.bind(this)}>
+                      className="btn-group btn btn-info btn-sm"
+                      role="group"
+                      aria-label="..."
+                      onClick={this.handleReviewClick.bind(this)}>
                       Library Thing {' '}<span className="badge">
-                      {this.props.item.libThingRating}</span>
+                        {this.props.item.libThingRating}</span>
                     </button>
                     <button type="button"
-                            className="btn-group btn btn-info btn-sm"
-                            role="group"
-                            aria-label="..."
-                            onClick={this.handleReviewClick.bind(this)}>
+                      className="btn-group btn btn-info btn-sm"
+                      role="group"
+                      aria-label="..."
+                      onClick={this.handleReviewClick.bind(this)}>
                       GoodReads {' '}<span className="badge">{this.props.item.gReadsRating}</span>
                     </button>
                     <button type="button"
-                            className="btn-group btn btn-info btn-sm"
-                            role="group"
-                            aria-label="..."
-                            onClick={this.handleReviewClick.bind(this)}>
+                      className="btn-group btn btn-info btn-sm"
+                      role="group"
+                      aria-label="..."
+                      onClick={this.handleReviewClick.bind(this)}>
                       User Rating {' '}<span className="badge">{this.props.item.userRating}</span>
                     </button>
                     <button type="button"
                       className="btn-group btn btn-success btn-sm"
                       role="group"
                       aria-label="..."
+<<<<<<< HEAD
+                      onClick={this.linktoUserReview.bind(this)}>
+                      Write Review
+                    </button>
+=======
                       value="show modal"
                       // onClick={this.linktoUserReview.bind(this)}
                       onClick={this.showModal}>Write Review</button>
@@ -125,11 +142,12 @@ export default class MainList extends Component {
                             role="group"
                             aria-label="..."
                             onClick={this.getUserReviews}>User Reviews</button>
+>>>>>>> cfc08e6104e95f375f3bfd6dd1020befaeb1c40f
                     <button type="button"
-                            className="btn-group btn btn-danger btn-sm"
-                            role="group"
-                            aria-label="..."
-                            onClick={this.handleReviewClick.bind(this)}>
+                      className="btn-group btn btn-danger btn-sm"
+                      role="group"
+                      aria-label="..."
+                      onClick={this.handleReviewClick.bind(this)}>
                       Review
                       {/* <span className="glyphicon glyphicon-star-empty" aria-hidden="true"></span> */}
                     </button>
@@ -141,6 +159,9 @@ export default class MainList extends Component {
                   </a>
                   {this.props.item.longDescript}
                   <div>
+<<<<<<< HEAD
+                    <UserReviewSubmit title={this.props.item.title} />
+=======
                     {this.state.userReviews.map(review => {
                       console.log(review)
                       return (
@@ -154,7 +175,11 @@ export default class MainList extends Component {
                         <p>{review.reviewText}</p>
                       </div>)
                     })}
+>>>>>>> cfc08e6104e95f375f3bfd6dd1020befaeb1c40f
                   </div>
+                </div>
+                <div>
+                  Title : {this.props.item.ebaydata}
                 </div>
                 <div className="media-right">
                   <ul className="nav nav-pills">
@@ -162,8 +187,6 @@ export default class MainList extends Component {
                     {this.props.openLibLink
                       ? <li role="presentation" className="enabled"><a onClick={() => window.open(this.props.openLibLink, '_blank')}>Open Library</a></li>
                       : <div />}
-                    {/* <li role="presentation" className="disabled"><a href="#">Open Library</a></li> */}
-                    {/* <li role="presentation" className="disabled"><a href="#">Check local library</a></li> */}
                   </ul>
                 </div>
               </div>
