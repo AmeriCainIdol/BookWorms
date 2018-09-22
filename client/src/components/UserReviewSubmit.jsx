@@ -87,11 +87,6 @@ export default class UserReviewSubmit extends Component {
                         placeholder="Title"
                         style={{width: '400px'}}
                         onChange={this.updateTitle}/>
-                <textarea type="text" 
-                          className="form-control" 
-                          placeholder="Title"
-                          style={{width: '400px'}}
-                          onChange={this.updateTitle}/>
                   <textarea type="text" 
                             className="form-control" 
                             onChange={this.updateReviewText}
