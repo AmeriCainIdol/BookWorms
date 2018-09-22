@@ -68,18 +68,18 @@ export default class UserReviewSubmit extends Component {
     })
   }
   
-  componentDidMount() {
-    axios.get('/userreviews')
-    .then(response => {
-      console.log(response);
-      this.setState({userReview: response.data}, () => {
-      })
-    })
-    .catch(err => {
-      console.error(err);
-    })
-    console.log(this.state.userReview)
-  }
+  // componentWillMount() {
+  //   axios.get('/userreviews')
+  //   .then(response => {
+  //     console.log(response, 'line 74');
+  //     this.setState({userReview: response.data}, () => {
+  //     })
+  //   })
+  //   .catch(err => {
+  //     console.error(err);
+  //   })
+  //   console.log(this.state.userReview)
+  // }
 
   render () {
     return (
@@ -105,11 +105,13 @@ export default class UserReviewSubmit extends Component {
                   <input  type="text" 
                           className="form-control" 
                           placeholder="Title"
+                          style={{width: '400px'}}
                           onChange={this.updateTitle}/>
                   <textarea type="text" 
                             className="form-control" 
                             onChange={this.updateReviewText}
-                            placeholder="Write Review...."/>
+                            placeholder="Write Review...."
+                            style={{width: '400px'}}/>
                   <button type="submit" 
                           className="btn btn-success"
                           >Submit Review</button>
@@ -129,22 +131,14 @@ export default class UserReviewSubmit extends Component {
           <div className="container-fluid">
             <div className="row">
               <div className="col-md-4">
-              {this.state.userReview.map(reviewPart => {
-                return (<UserDisplay  key={reviewPart.id} 
-                                      title={reviewPart.title}
-                                      rating={reviewPart.rating}
-                                      reviewText={reviewPart.reviewText}/>
-                  // <div >
-                  //   <h3>{reviewPart.title}</h3>
-                  //   <dl>
-                  //     <dt>
-                  //       Rating: {reviewPart.rating}
-                  //     </dt>
-                  //   </dl>
-                  //   <p>{reviewPart.reviewText}</p>
-                  // </div>
-                )
-              })}
+              <UserDisplay review={this.state.userReview}/>
+                {/* {this.state.userReview.map(reviewPart => {
+                  return (<UserDisplay  key={reviewPart.id} 
+                                        title={reviewPart.title}
+                                        rating={reviewPart.rating}
+                                        reviewText={reviewPart.reviewText}/>
+                  )
+                })} */}
               </div>
             </div>
           </div>
