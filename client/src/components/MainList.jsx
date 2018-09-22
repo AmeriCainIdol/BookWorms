@@ -3,6 +3,8 @@ import { Card, CardTitle, CardText } from 'material-ui/Card';
 import { BrowserRouter, Link } from 'react-router-dom';
 import UserDisplay from './userReviewDisplay.jsx';
 import ModalReview from './Modal.jsx';
+import UserReviewSubmit from './UserReviewSubmit.jsx';
+import axios from 'axios';
 
 
 export default class MainList extends Component {
@@ -12,7 +14,9 @@ export default class MainList extends Component {
 
     this.state = {
       reviewInput: null,
-      showModal: false
+      showModal: false,
+      userReviews: [],
+      showUserReview: false
     };
 
     this.handleSearchClick = (e) => {
@@ -32,6 +36,7 @@ export default class MainList extends Component {
     };
     //bind this to showModal method
     this.showModal = this.showModal.bind(this);
+    this.getUserReviews = this.getUserReviews.bind(this);
   }
   //create method to display modal
   showModal() {
@@ -40,6 +45,24 @@ export default class MainList extends Component {
     })
     console.log('clicked')
   }
+
+  getUserReviews() {
+    axios.get('userreviews')
+      .then(response => {
+        console.log(response, 'line 48 mainlist.jsx')
+        this.setState({ 
+          userReviews: response.data,
+          showUserReview: !this.state.showUserReview
+         }, () => {
+          console.log(this.state.userReviews)
+        })
+      })
+      .catch(err => {
+        console.log('Houston, we have a problem', err)
+      })
+  }
+
+  
 
   render() {
     return (
@@ -98,6 +121,11 @@ export default class MainList extends Component {
                       // onClick={this.linktoUserReview.bind(this)}
                       onClick={this.showModal}>Write Review</button>
                     <button type="button"
+                            className="btn-group btn btn-primary btn-sm"
+                            role="group"
+                            aria-label="..."
+                            onClick={this.getUserReviews}>User Reviews</button>
+                    <button type="button"
                             className="btn-group btn btn-danger btn-sm"
                             role="group"
                             aria-label="..."
@@ -113,8 +141,19 @@ export default class MainList extends Component {
                   </a>
                   {this.props.item.longDescript}
                   <div>
-                    <UserDisplay />
-                    {/* <UserReviewSubmit /> */}
+                    {this.state.userReviews.map(review => {
+                      console.log(review)
+                      return (
+                        <div >
+                        <h3>{review.title}</h3>
+                        <dl>
+                          <dt>
+                            Rating: {review.rating}
+                          </dt>
+                        </dl>
+                        <p>{review.reviewText}</p>
+                      </div>)
+                    })}
                   </div>
                 </div>
                 <div className="media-right">
