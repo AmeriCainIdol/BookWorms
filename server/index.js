@@ -13,15 +13,17 @@ const cors = require('cors');
 const helpers = require('./helpers.js');
 const db = require('../database/index.js');
 
-//require ebayHelpers file for post/get requests
+// require ebayHelpers file for post/get requests
 // const ebayHelpers = require('./ebayHelpers.js');
 require('dotenv').config();
-const ebayHelpers = require('./ebayhelpers').ebayHelpers;
+const ebayHelpers = require('./ebayHelpers').ebayHelpers;
 
 const app = express();
 // tell the app to look for static files in these directories
 app.use(express.static(`${__dirname}/../client/dist`));
 // tell the app to parse HTTP body messages
+//added line to have bodyParser parse incoming json
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
 
@@ -47,15 +49,20 @@ const authRoutes = require('./routes/auth');
 app.use('/auth', authRoutes);
 app.use(morgan('tiny'));
 
+app.set('port', (process.env.PORT || 3000));
+// start the server
+app.listen(app.get('port'), () => {
+  console.log(`Server is running on port ${app.get('port')}`);
+});
 
 app.post('/addRating', jsonParser, (req, res) => {
   const body = req.body;
 
   db.addRating(body.title, body.rating, (err, doc) => {
     if (err) {
-      console.log(err);
+      // console.log(err);
     } else {
-      console.log('rating added in server, success');
+      // console.log('rating added in server, success');
       res.send(201);
     }
   });
@@ -65,7 +72,7 @@ app.get('/topRated', (req, res) => {
   const top = [];
   db.allBooks((err, books) => {
     if (err) {
-      console.log(err);
+      // console.log(err);
     } else {
       books.forEach((book) => {
         if (book.bookWormRating > 1) {
@@ -114,14 +121,14 @@ app.post('/addReview', jsonParser, (req, res) => {
   const reviewRating = req.body.reviewRating;
   db.saveReview(title, username, reviewText, reviewRating, (err, doc) => {
     if (err) {
-      console.log(err);
+      // console.log(err);
     } else {
-      console.log('saved review');
+      // console.log('saved review');
     }
   });
   db.allReviews((err, doc) => {
     if (err) {
-      console.log(err);
+      // console.log(err);
     } else {
       doc.forEach((review) => {
         const currentBook = {
@@ -143,7 +150,7 @@ app.get('/singleReviews', (req, res) => {
   const userReviews = [];
   db.allReviews((err, doc) => {
     if (err) {
-      console.log(err);
+      // console.log(err);
     } else {
       doc.forEach((review) => {
         const currentBook = {
@@ -184,6 +191,7 @@ app.get('/genreTest', (req, res) => {
 
 
 // res.data.items[0] will access the first book on search of a title. with a proper title this works well.
+
 app.get('/googleData', (req, response) => {
   const query = req.query.title;
   helpers.googleBooks(query)
@@ -196,6 +204,7 @@ app.get('/googleData', (req, response) => {
       const coverImage = info.imageLinks.thumbnail; // url to large format thumbnail
       const ISBN10 = info.industryIdentifiers[0].identifier;
       let ISBN13;
+
       if (info.industryIdentifiers[1]) {
         ISBN13 = info.industryIdentifiers[1].identifier;
       }
@@ -220,8 +229,10 @@ app.get('/googleData', (req, response) => {
                 userRating: 3.0,
                 coverImage,
               }, (err) => {
-                if (err) { console.log(err); } else {
-                  console.log('success');
+                if (err) {
+                  // console.log(err);
+                } else {
+                  // console.log('success');
                 }
               });
               response.json({
@@ -239,7 +250,7 @@ app.get('/googleData', (req, response) => {
             });
         });
     })
-    .catch(err => console.log(err));
+    .catch(err => console.log('error line 243, not our problem'));
 });
 
 app.get('/openLibLink', (req, res) => {
@@ -250,11 +261,11 @@ app.get('/openLibLink', (req, res) => {
         const readerLink = libLink.data[`ISBN:${ISBN}`].preview_url;
         res.send({ readerLink });
       } else {
-        res.send(200);
+        res.sendStatus(200);
       }
     })
     .catch((err) => {
-      console.error(err, 'error in server');
+      // console.error(err, 'error in server');
     });
 });
 
@@ -266,33 +277,72 @@ app.get('/goodreads', (req, res) => {
   // let title = req.body.title;
   helpers.goodReadsData('Green Eggs and Ham')
     .then((data) => {
-      console.log(data.data.split('<average_rating>')[1].slice(0, 4));
-      console.log(data.data.split('<description>')[1].split(']')[0].slice(9));
+      // console.log(data.data.split('<average_rating>')[1].slice(0, 4));
+      // console.log(data.data.split('<description>')[1].split(']')[0].slice(9));
     })
-    .catch(err => console.log(err));
+    .catch(err => console.log('error line 273'));
 });
 
-app.post('/ebaybay',
-  (request, response, body) => {
-    const keyWordToEncode = request.body;
-    const keyWordEncoded = ebayHelpers.createKeyWordForSearch(keyWordToEncode);
-    console.log('8:15 request.body: ', response);
-    console.log('encoded keyword: ', keyWordEncoded);
-    response.send(201, request.body);
-    response.end();
-  });
-//post UserReviews to database
-app.post('/userReviews', (req, res) => {
-  console.log(req.body);
+
+// TEAM AMERICAIN IDOL WORK STARTS HERE //
+
+//post request to server for userReviews
+app.post('/userReviewSubmit', (req, res) => {
+  // console.log(req.body.rating, 'post request from server/index.js')
+  const title = req.body.title;
+  const bookTitle = req.body.bookTitle;
+  const reviewText = req.body.reviewText;
+  const rating = req.body.rating;
+  const created_at = Date.now();
+
+  const newReview = {
+    title,
+    bookTitle,
+    reviewText,
+    rating,
+    created_at
+  }
+  db.saveUserReview(newReview, res);
+  res.sendStatus(201);
+  res.end();
 })
 
-//
-// Set Port, hosting services will look for process.env.PORT
+app.get('/userreviews', (req, res) => {
+  db.findUserReviews((err, data) => {
+    if (err) {
+      console.error(err);
+    } else {
+      console.log(data, 'data')
+      const displayedReviewData = data.map(review => {
+        console.log(review);
+        return {
+          id: review.id,
+          title: review.title,
+          bookTitle: review.bookTitle,
+          reviewText: review.reviewText,
+          rating: review.rating
+        }
+      })
+      // console.log(displayedReviewData, 'display data');
+      res.send(displayedReviewData);
+    }
+  })
+})
 
 
+// app.get('/ebaybay',
+//   (req, res) => {
+//     const keyWordToEncode = req.body;
+//     console.log(keyWordToEncode);
+//     const keyWordEncoded = ebayHelpers.createKeyWordForSearch(keyWordToEncode);
+//     console.log(keyWordEncoded);
 
-app.set('port', (process.env.PORT || 3000));
-// start the server
-app.listen(app.get('port'), () => {
-  console.log(`Server is running on port ${app.get('port')}`);
-});
+//     ebayHelpers.ebayPost(keyWordEncoded,
+//       (err, res) => {
+//         if (err) {
+//           console.log('ebayhelpers erro');
+//         } else {
+//           console.log('ebayhelpers success', res);
+//         }
+//       });
+//   });

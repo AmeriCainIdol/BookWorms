@@ -33,39 +33,45 @@ const userSchema = mongoose.Schema({
 
 const User = mongoose.model('User', userSchema);
 
-// const reviewSchema = mongoose.Schema({
-//   title: String,
-//   username: String,
-//   reviewText: String,
-//   reviewRating: Number,
-// });
+const reviewSchema = mongoose.Schema({
+  title: String,
+  bookTitle: String,
+  reviewText: String,
+  reviewRating: Number,
+});
 
 //create UserReviewSchema
 const userReviewSchema = mongoose.Schema({
-  username: String,
   title: String,
-  text: String,
-  rating: Number
+  bookTitle: String,
+  reviewText: String,
+  rating: Number,
+  created_at: Date
 })
 
 const UserReview = mongoose.model('UserReview', userReviewSchema);
 
-const saveUserReview = (username, title, text, rating, callback) => {
-  const newUserReview = new UserReview({
-    username,
-    title,
-    text,
-    rating
-  });
-  newUserReview.save((err, data) => {
+const saveUserReview = (reviewObject, response) => {
+  mongoose.connection.db.dropCollection('userreviews')
+  const newUserReview = new UserReview(reviewObject);
+  
+  newUserReview.save(err => {
     if (err) {
-      callback(err);
+      console.log(`error saving review into database saveUserReview function ${err}`)
     } else {
-      callback(err, data);
+      console.log('successfully saves review to database')
+      response.status(201);
+      response.end();
     }
   })
 }
-// const Review = mongoose.model('Review', reviewSchema);
+//add function to query database for userReviews to display on DOM
+// const query = UserReview.find();
+
+const findUserReviews = callback => {
+  UserReview.find().limit(3).sort({'created_at': 1}).select('id title bookTitle reviewText rating').exec(callback);
+}
+const Review = mongoose.model('Review', reviewSchema);
 
 const saveReview = (title, username, reviewText, reviewRating, cb) => {
   const review = new Review({
@@ -82,6 +88,7 @@ const saveReview = (title, username, reviewText, reviewRating, cb) => {
     }
   });
 };
+
 
 const allReviews = (cb) => {
   Review.find({}, (err, books) => {
@@ -246,6 +253,7 @@ module.exports = {
   allBooks,
   addRating,
   saveUserReview,
+  findUserReviews,
   // saveReview,
   allReviews,
 };

@@ -8,43 +8,44 @@ const Rating = require('react-rating');
 class Reviews extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { 
+    this.state = {
       starValue: 0,
-      value: '' 
+      value: '',
     };
-    this.redirectToUserSubmission= () => {
-      this.props.history.push('/UserReviewSubmit'); 
-    }
     this.handleChange = (e) => {
       this.setState({ value: e.target.value });
-    }
+    };
+
     this.handleInputChange = (value) => {
       this.setState({ starValue: value });
-    }
+    };
+
     this.handleSubmit = (e) => {
       e.preventDefault();
 
-      const item = this.props.item;
+      // const item = this.props.item;
+      const { item } = this.props;
+      const { state } = this.state;
 
       const rating = {
-        title: this.props.item.title,
-        rating: this.state.starValue
-      }
+        title: item.title,
+        rating: state.starValue,
+      };
 
       const review = {
-        title: this.props.item.title,
-        username: this.props.username,
-        reviewText: this.state.value,
-        reviewRating: this.state.starValue,
-      }
-      this.props.handleReviewInput(review, rating, item);
+        title: item.title,
+        username: item.username,
+        reviewText: state.value,
+        reviewRating: state.starValue,
+      };
+      item.handleReviewInput(review, rating, item);
       this.setState({ value: '' });
-    }
+    };
   }
 
   render() {
     return (
-    
+
       <div className="container-fluid">
         <div className="row">
           <div className="col-md-6">
@@ -68,10 +69,10 @@ class Reviews extends React.Component {
             <div className="media">
               <div className="media-right">
                 <Rating {...this.props} initialRating={this.state.starValue}
-                onChange={this.handleInputChange}
+                  onChange={this.handleInputChange}
                 // emptySymbol={<img src="../../../images/star-empty.png" className="icon" />}
                 // fullSymbol={<img src="../../../images/star-full.png" className="icon" />}
-                /> 
+                />
               </div>
             </div>
           </div>
@@ -87,7 +88,7 @@ class Reviews extends React.Component {
             </div>
             <div className="container-fluid" style={{ paddingTop: '20px' }}>
               <h4 className="media-heading">Critics Reviews</h4>
-              <CriticsReviewsList item={this.props.item}/>
+              <CriticsReviewsList item={this.props.item} />
             </div>
           </div>
           <div className="col-md-6">
@@ -95,7 +96,7 @@ class Reviews extends React.Component {
               <button type="button" className="btn-group btn btn-info btn-lg" role="group" aria-label="...">
                 Composite User Rating <span className="badge">{this.props.item.userRating}</span>
               </button>
-              
+
             </div>
             <div className="container-fluid" style={{ paddingTop: '20px' }}>
               <h4 className="media-heading">User Reviews</h4>
@@ -109,7 +110,7 @@ class Reviews extends React.Component {
           </div>
         </div>
       </div>
-      
+
     );
   }
 }

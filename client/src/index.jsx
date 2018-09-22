@@ -7,7 +7,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import {
   BrowserRouter as Router,
   Route,
-  Link, 
+  Link,
   Redirect,
   withRouter,
 } from 'react-router-dom';
@@ -22,9 +22,7 @@ import Logout from './containers/Logout.jsx';
 import SignUpPage from './containers/SignUpPage.jsx';
 import Main from './components/Main.jsx';
 import Auth from './modules/Auth';
-import UserReviewSubmit from './components/UserReviewSubmit.jsx';
-
-// const axios = require('axios');
+import UserReviewSubmit from './components/userReviewSubmit.jsx';
 
 // remove tap delay, essential for MaterialUI to work properly
 injectTapEventPlugin();
@@ -40,8 +38,8 @@ const LoggedOutRoute = ({ component: Component, ...rest }) => (
         }}
         />
       ) : (
-        <Component {...props} {...rest} />
-      )
+          <Component {...props} {...rest} />
+        )
     )}
   />
 );
@@ -65,20 +63,23 @@ class App extends Component {
       authenticated: false,
       username: null,
       openLibLink: null,
+      ebay: null,
     };
     console.log(this.state.username)
 
-    //add function for axios call to ebay
-    this.ebaySearch = (keyword) => {
-      console.log(keyword)
-      axios.post('/ebaybay', { keyword })
-      .then(response => {
-        console.log(response);
+    // add function for axios call to ebay
+    this.ebaySearch = (title) => {
+      axios.get('/ebaybay', {
+        params: { title },
       })
-      .catch(err => {
-        console.error(err);
-      })
-    }
+        .then((response) => {
+          console.log('response.data', response.data);
+          // this.setState({ ebay });
+        })
+        .catch((err) => {
+          console.error('error', err);
+        });
+    };
 
     this.searchForBook = (title) => {
       axios.get('/googleData', {
@@ -95,9 +96,9 @@ class App extends Component {
               if (this.state.reviewToggled) {
                 this.setState({ reviewToggled: false });
               }
-              this.setState({ items: items, openLibLink: openLibLink });
-            })
-          })
+              this.setState({ items, openLibLink });
+            });
+        })
         .catch((error) => {
           // TODO: tell user there was no result
           console.error(error, 'error in index.jsx');
@@ -110,16 +111,15 @@ class App extends Component {
         params: { title },
       })
         .then((response) => {
-          this.setState({ 
-            reviewToggled: !this.state.reviewToggled, 
+          this.setState({
+            reviewToggled: !this.state.reviewToggled,
             items: [item],
-            reviews: response.data
-          });        
+            reviews: response.data,
+          });
         })
         .catch((error) => {
-          console.error(error, 'error in index.jsx');
+          console.error(error, 'error in index.jsx 116');
         });
-
     };
 
     this.searchByGenre = (genre) => {
@@ -133,7 +133,7 @@ class App extends Component {
           this.setState({ items: response.data.highRated });
         })
         .catch((error) => {
-          console.error(error, 'error in index.jsx');
+          console.error(error, 'error in index.jsx 131');
         });
     };
 
@@ -146,10 +146,10 @@ class App extends Component {
             .then((response) => {
               // update state of reviews with new review
               this.reviewToggle(item);
-            })
+            });
         })
         .catch((error) => {
-          console.error(error, 'error in index.jsx');
+          console.error(error, 'error in index.jsx 147');
         });
     };
     this.getTopRated = () => {
@@ -161,9 +161,9 @@ class App extends Component {
           this.setState({ items: response.data.top });
         })
         .catch((error) => {
-          console.error(error, 'error in index.jsx');
+          console.error(error, 'error in index.jsx 159');
         });
-    }
+    };
   }
 
   componentDidMount() {
@@ -175,7 +175,7 @@ class App extends Component {
         this.setState({ items: response.data.top });
       })
       .catch((error) => {
-        console.error(error, 'error in index.jsx');
+        console.error(error, 'error in index.jsx 173');
       });
     // this.setState({
     //   // items: DATA,
@@ -186,9 +186,9 @@ class App extends Component {
   toggleAuthenticateStatus() {
     // check authenticated status and toggle state based on that
     // set current username if authenticated
-    this.setState({ authenticated: Auth.isUserAuthenticated(), username : sessionStorage.getItem('username') });
+    this.setState({ authenticated: Auth.isUserAuthenticated(), username: sessionStorage.getItem('username') });
   }
-  
+
   render() {
     return (
       <MuiThemeProvider muiTheme={getMuiTheme()}>
@@ -200,33 +200,33 @@ class App extends Component {
                   path="/"
                   render={props => (
                     <Nav
-                    {...props}
-                    items={this.state.items}
-                    reviews={this.state.reviews}
-                    reviewToggle={this.reviewToggle.bind(this)}
-                    reviewToggled={this.state.reviewToggled}
-                    handleSearchInput={this.searchForBook.bind(this)}
-                    handleSearchByGenre={this.searchByGenre.bind(this)}
-                    handleReviewInput={this.submitReview.bind(this)}
-                    username={this.state.username}
-                    openLibLink={this.state.openLibLink}
-                    handleHomeLink={this.getTopRated.bind(this)}
-                    //add link for ebaySearch
-                    ebaySearch={this.ebaySearch.bind(this)}
-                      
-                  />
+                      {...props}
+                      items={this.state.items}
+                      reviews={this.state.reviews}
+                      reviewToggle={this.reviewToggle.bind(this)}
+                      reviewToggled={this.state.reviewToggled}
+                      handleSearchInput={this.searchForBook.bind(this)}
+                      handleSearchByGenre={this.searchByGenre.bind(this)}
+                      handleReviewInput={this.submitReview.bind(this)}
+                      username={this.state.username}
+                      openLibLink={this.state.openLibLink}
+                      handleHomeLink={this.getTopRated.bind(this)}
+                      // add link for ebaySearch
+                      handleEbaySearchInput={this.ebaySearch.bind(this)}
+
+                    />
                   )}
-                />  
-              </div>  
-    ) : ( 
-              <Route path="/" render={props => <Nav1 />} /> 
-            )}
+                />
+              </div>
+            ) : (
+                <Route path="/" render={props => <Nav1 />} />
+              )}
             <PropsRoute exact path="/" component={HomePage} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
-            <LoggedOutRoute path="/login" component={LoginPage} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()}  />
+            <LoggedOutRoute path="/login" component={LoginPage} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
             <LoggedOutRoute path="/signup" component={SignUpPage} />
             <Route path="/logout" component={Logout} />
           </div>
-              
+
         </Router>
       </MuiThemeProvider>
     );
@@ -234,4 +234,3 @@ class App extends Component {
 }
 
 export default App;
-
