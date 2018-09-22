@@ -3,7 +3,7 @@ import { Card, CardTitle, CardText } from 'material-ui/Card';
 import { BrowserRouter, Link } from 'react-router-dom';
 import UserDisplay from './userReviewDisplay.jsx';
 import ModalReview from './Modal.jsx';
-import UserReviewSubmit from './userReviewSubmit.jsx';
+import UserReviewSubmit from './UserReviewSubmit.jsx';
 import axios from 'axios';
 
 
